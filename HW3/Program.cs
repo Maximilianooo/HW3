@@ -24,7 +24,7 @@ namespace HW3
                 ICard chosenCard = ChooseCard(deck);
                 IEnemy enemy = CreateRandomEnemy();
 
-                Console.WriteLine("Вы сражаетесь с врагом: " + enemy.Name);
+                Console.WriteLine("Вы сражаетесь с врагом: " + enemy.Name + " с моралью:" + enemy.Morality);
                 Console.WriteLine("Сила вашей карты: " + chosenCard.Power);
                 Console.WriteLine("Здоровье врага: " + enemy.Health);
 
@@ -103,8 +103,14 @@ namespace HW3
 
             double diff = Math.Abs(card.Morality * card.Ethic -
                                    enemy.Morality * enemy.Ethic);
-            double maxDiff = 9;
-            double chance = 1 - diff / maxDiff;
+            double maxDiff = Math.Abs(card.Morality - enemy.Morality);
+            double chance = 0;
+            if(maxDiff >0 ) 
+            { chance = 1 - diff / maxDiff;}
+            else
+            {
+                chance = 1;
+            }
             Random random = new Random();
             double randomDouble = random.NextDouble();
             
