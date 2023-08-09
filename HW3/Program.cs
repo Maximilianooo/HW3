@@ -70,13 +70,18 @@ namespace HW3
         {
             Random random = new Random();
             string[] elements = { "огонь", "воздух", "вода", "земля" };
+            
             int minHealth = 1;
             int maxHealth = 20;
+            int minMorality = 1;
+            int maxMorality = 4;
+            int minEthic = 1;
+            int maxEthic = 4;
             int elementCount = elements.Length;
             string element = elements[random.Next(0, elementCount)];
             int health = random.Next(minHealth, maxHealth);
-            int morality = random.Next(1, 4); ;
-            int ethic = random.Next(1, 4);
+            int morality = random.Next(minMorality, maxMorality ); ;
+            int ethic = random.Next(minEthic , maxEthic);
 
             return new Enemy("Враг", element, health, morality, ethic);
         }
