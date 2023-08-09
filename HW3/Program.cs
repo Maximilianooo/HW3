@@ -105,7 +105,7 @@ namespace HW3
                                    enemy.Morality * enemy.Ethic);
             double maxDiff = Math.Abs(card.Morality - enemy.Morality);
             double chance = 0;
-            if(maxDiff >0 ) 
+            if(maxDiff > 0) 
             { chance = 1 - diff / maxDiff;}
             else
             {
