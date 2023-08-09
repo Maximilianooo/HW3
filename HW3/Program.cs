@@ -22,7 +22,6 @@ namespace HW3
             {
                 
                 ICard chosenCard = ChooseCard(deck);
-                
                 IEnemy enemy = CreateRandomEnemy();
 
                 Console.WriteLine("Вы сражаетесь с врагом: " + enemy.Name);
@@ -30,7 +29,7 @@ namespace HW3
                 Console.WriteLine("Здоровье врага: " + enemy.Health);
 
                 // Проверяем условия для победы
-                if (IsVictory(chosenCard, enemy))
+                if (WinCheck(chosenCard, enemy))
                 {
                     Console.WriteLine("Вы победили врага!");
                     score++;
@@ -71,21 +70,24 @@ namespace HW3
         {
             Random random = new Random();
             string[] elements = { "огонь", "воздух", "вода", "земля" };
-            string element = elements[random.Next(0, 4)];
-            int health = random.Next(1, 21);
+            int minHealth = 1;
+            int maxHealth = 20;
+            int elementCount = elements.Length;
+            string element = elements[random.Next(0, elementCount)];
+            int health = random.Next(minHealth, maxHealth);
             int morality = random.Next(1, 4); ;
             int ethic = random.Next(1, 4);
 
             return new Enemy("Враг", element, health, morality, ethic);
         }
-        static bool IsVictory(ICard card, IEnemy enemy)
+        static bool WinCheck(ICard card, IEnemy enemy)
         {
-            // Проверяем применение силы
+            double cardPower = card.Power;
             if (enemy.Element == card.Element)
             {
                 // Применяем модификатор к силе карты
-                double modifiedPower = card.Power * 0.7;
-                if (modifiedPower >= enemy.Health)
+                cardPower *= 0.7;
+                if (cardPower>= enemy.Health)
                     return true;
             }
             else
@@ -93,18 +95,15 @@ namespace HW3
                 if (card.Power >= enemy.Health)
                     return true;
             }
-            
-            double diff = Math.Abs(card.Morality - enemy.Morality) +
-                          Math.Abs(card.Ethic - enemy.Ethic);
+
+            double diff = Math.Abs(card.Morality * card.Ethic -
+                                   enemy.Morality * enemy.Ethic);
             double maxDiff = 9;
             double chance = 1 - diff / maxDiff;
             Random random = new Random();
             double randomDouble = random.NextDouble();
-
-            if (randomDouble < chance)
-                return true;
-
-            return false;
+            
+            return randomDouble < chance;
         }
         static void ReplaceCard(List<ICard> deck)
         {
